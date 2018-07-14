@@ -19,7 +19,7 @@ setup(name='dask-jobqueue',
       cmdclass=versioneer.get_cmdclass(),
       description='Easy deployment of Dask Distributed on job queuing systems '
                   'such as PBS, Slurm, or SGE.*',
-      url='https://github.com/dask/dask-jobqueue',
+      url='https://github.com/ylabbe/dask-jobqueue',
       license='BSD 3-Clause',
       packages=['dask_jobqueue'],
       include_package_data=True,

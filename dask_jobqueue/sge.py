@@ -44,7 +44,7 @@ class SGECluster(JobQueueCluster):
     cancel_command = 'qdel'
     scheduler_name = 'sge'
 
-    def __init__(self, queue=None, project=None, resource_spec=None, walltime=None, **kwargs):
+    def __init__(self, queue=None, num_ressources=1, project=None, resource_spec=None, walltime=None, **kwargs):
         if queue is None:
             queue = dask.config.get('jobqueue.%s.queue' % self.scheduler_name)
         if project is None:
@@ -62,6 +62,7 @@ class SGECluster(JobQueueCluster):
             header_lines.append('#$ -N %(name)s')
         if queue is not None:
             header_lines.append('#$ -q %(queue)s')
+        header_lines.append('#$ -pe serial %(num_ressources)s')
         if project is not None:
             header_lines.append('#$ -P %(project)s')
         if resource_spec is not None:
@@ -76,7 +77,9 @@ class SGECluster(JobQueueCluster):
                   'project': project,
                   'processes': self.worker_processes,
                   'walltime': walltime,
-                  'resource_spec': resource_spec,}
+                  'resource_spec': resource_spec,
+                  'num_ressources' : num_ressources,
+        }
         self.job_header = header_template % config
 
         logger.debug("Job script: \n %s" % self.job_script())
